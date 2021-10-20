@@ -17,7 +17,7 @@ private:
 
 public:
   EmisoraBLE laEmisora {
-	"GTI-3A", //  nombre emisora
+	"gti_jcherram", //  nombre emisora
 	  0x004c, // fabricanteID (Apple)
 	  4 // txPower
 	  };

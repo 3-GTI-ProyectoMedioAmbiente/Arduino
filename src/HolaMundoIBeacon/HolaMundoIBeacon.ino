@@ -15,7 +15,7 @@
 
 #include "LED.h"
 #include "PuertoSerie.h"
-
+#include <Adafruit_TinyUSB.h>
 namespace Globales {
   
   LED elLED ( /* NUMERO DEL PIN LED = */ 7 );
