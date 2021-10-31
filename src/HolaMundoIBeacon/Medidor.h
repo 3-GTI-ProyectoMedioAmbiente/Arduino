@@ -18,11 +18,11 @@ public:
   } 
 
   int medirCO2() {
-	return 235;
+	return 888;
   }
 
   int medirTemperatura() {
-	return -12;
+	return -20;
   } 
 	
 }; // class

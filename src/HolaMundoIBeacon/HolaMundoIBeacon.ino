@@ -93,7 +93,7 @@ void loop () {
 
   int valorCO2 = elMedidor.medirCO2();
   
-  elPublicador.publicarCO2( valorCO2,
+  elPublicador.publicarCO2( valorCO2+cont,
 							cont,
 							1000 // intervalo de emisión
 							);
@@ -101,7 +101,7 @@ void loop () {
   // mido y publico
   int valorTemperatura = elMedidor.medirTemperatura();
   
-  elPublicador.publicarTemperatura( valorTemperatura, 
+  elPublicador.publicarTemperatura( valorTemperatura+cont, 
 									cont,
 									1000 // intervalo de emisión
 									);
@@ -122,7 +122,7 @@ void loop () {
   };
 
   // elPublicador.laEmisora.emitirAnuncioIBeaconLibre ( &datos[0], 21 );
-  elPublicador.laEmisora.emitirAnuncioIBeaconLibre ( "MolaMolaMolaMolaMolaM", 21 );
+ // elPublicador.laEmisora.emitirAnuncioIBeaconLibre ( "MolaMolaMolaMolaMolaM", 21 );
 
   esperar( 2000 );
 

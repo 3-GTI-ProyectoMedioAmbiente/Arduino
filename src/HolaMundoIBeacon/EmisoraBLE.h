@@ -102,6 +102,12 @@ public:
 	(*this).detenerAnuncio();
 	
 	// creo el beacon 
+    Serial.println( "-------------MINOR--------------->>>>");
+    Serial.print( minor );
+
+    Serial.println( "------------------MAJOR---------->>>>");
+
+      Serial.println( major);
 	BLEBeacon elBeacon( beaconUUID, major, minor, rssi );
 	elBeacon.setManufacturer( (*this).fabricanteID );
 

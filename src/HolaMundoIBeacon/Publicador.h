@@ -17,7 +17,7 @@ private:
 
 public:
   EmisoraBLE laEmisora {
-	"gti_jcherram", //  nombre emisora
+	"sergi", //  nombre emisora
 	  0x004c, // fabricanteID (Apple)
 	  4 // txPower
 	  };
