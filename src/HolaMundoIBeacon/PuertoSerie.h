@@ -2,31 +2,53 @@
 
 // Autor: Juan Carlos Hernandez Ramirez
 // 22/09/2021------------------------------------------------------
-
 #ifndef PUERTO_SERIE_H_INCLUIDO
 #define PUERTO_SERIE_H_INCLUIDO
-
-class PuertoSerie  {
-
+// ----------------------------------------------------------
+class PuertoSerie  { //classe PuertoSerie
 public:
+  
+  // .........................................................
+  /**
+ * La funcion PuertoSerie() es un constructor que recibe un parametro entero.
+ * Z -> Constructor() ->
+ * @param baudios parametro tiempo dado de valor entero.
+ * @return nada.
+ */
   PuertoSerie (long baudios) {
 	Serial.begin( baudios );
 	// mejor no poner esto aquí: while ( !Serial ) delay(10);   
-  }
+  } // ()
+  // .........................................................
 
+  // .........................................................
+  /**
+ * La funcion esperarDisponible().
+ * esperaDisponible()
+ */
   void esperarDisponible() {
 
-	while ( !Serial ) {
+	while ( !Serial ) { //mientras espero
 	  delay(10);   
 	}
 
-  } 
-
-  template<typename T>
-  void escribir (T mensaje) {
-	Serial.print( mensaje );
-  }
+  } // ()
+  // .........................................................
   
-};
+  // .........................................................
+  /**
+ * La funcion PuertoSerie() es un constructor que recibe un parametro entero.
+ * Texto -> escribir()
+ * @param T parametro de valor tipo Texto.
+ * @return nada.
+ */
+  template<typename T>
+  void escribir (T mensaje) { 
+	Serial.print( mensaje ); //escribe el Texto
+  } // ()
+  // ----------------------------------------------------------
+  
+}; // class PuertoSerie
 
+// ----------------------------------------------------------
 #endif

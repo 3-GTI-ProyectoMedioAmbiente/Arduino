@@ -29,6 +29,15 @@ namespace Globales {
 #include "Publicador.h"
 #include "Medidor.h"
 
+/**
+ * La funcion Global() es donde se declaran todas las variables globales.
+ * Global{
+ *  elLed:LED
+ *  elPuerto:PuertoSerie
+ *  elPublicador:Publicador
+ *  elMedidor:Medidor
+ * }:namespace
+ */
 
 namespace Globales {
 	
@@ -36,11 +45,22 @@ namespace Globales {
   Medidor elMedidor;
   
 };
+
+/**
+ * La funcion inicializarPlaquita() de momento nada.
+ * inicializarPlaquita()
+ */
+
 void inicializarPlaquita () {
 
   // de momento nada
 
 }
+
+/**
+ * La funcion setup() esta funcion sólo se ejecutará una vez al inicio del sistema.
+ * setup() ->
+ */
 
 void setup() {
 
@@ -60,6 +80,11 @@ void setup() {
 
 }
 
+/**
+ * La funcion lucecitas() enciende y apaga el led.
+ * lucecitas()
+ */
+
 inline void lucecitas() {
   using namespace Globales;
 
@@ -73,9 +98,21 @@ inline void lucecitas() {
   esperar ( 1000 ); 
 } 
 
+/**
+ * La funcion Loop declara cont a 0.
+ * Loop{
+ *  cont:N = 0
+ *  }:namespace
+ */
+
 namespace Loop {
   uint8_t cont = 0;
 };
+
+/**
+ * La funcion loop() esta funcion se ejecutará en bucle mientras el sistema este en funcionamiento.
+ * loop()
+ */
 
 void loop () {
 

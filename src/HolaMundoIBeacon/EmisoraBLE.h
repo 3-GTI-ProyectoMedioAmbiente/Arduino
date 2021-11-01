@@ -15,24 +15,63 @@
 // https://os.mbed.com/blog/entry/BLE-Beacons-URIBeacon-AltBeacons-iBeacon/
 // https://learn.adafruit.com/bluefruit-nrf52-feather-learning-guide/bleadvertising
 
-
+// ----------------------------------------------------------
 #include "ServicioEnEmisora.h"
 
-
-class EmisoraBLE {
+// ----------------------------------------------------------
+class EmisoraBLE { // classe EmisoraBLE
 private:
 
+// ----------------------------------------------------------
+/**
+ * La funcion nombreEmisora().
+ * nombreEmisora:Texto
+ */
   const char * nombreEmisora;
+// ----------------------------------------------------------
+
+// ----------------------------------------------------------
+ /**
+ * La funcion fabricanteID().
+ * fabricanteID:N
+ */
   const uint16_t fabricanteID;
+// ----------------------------------------------------------
+
+// ----------------------------------------------------------
+ /**
+ * La funcion txPower().
+ * txPower:Z
+ */
   const int8_t txPower;
+// ----------------------------------------------------------
 
 public:
 
-	//Declaramos CallBacks que seran definidos posteriormente
+  // .........................................................
+  /**
+  * La funcion CallbackConexionEstablecida().
+  * CallbackConexionEstablecida:N
+  */
   using CallbackConexionEstablecida = void ( uint16_t connHandle );
-  using CallbackConexionTerminada = void ( uint16_t connHandle, uint8_t reason);
+  // .........................................................
 
-	
+  // .........................................................
+  /**
+  * La funcion CallbackConexionTerminada().
+  * CallbackConexionTerminada:N,N
+  */
+  using CallbackConexionTerminada = void ( uint16_t connHandle, uint8_t reason);
+  // .........................................................
+
+  // .........................................................
+ /**
+ * La funcion EmisoraBLE() es un contructor.
+ * Texto,N,Z -> Constructor() ->
+ * @param nombreEmisora_ parametro de valor Texto.
+ * @param fabricanteID_ parametro de valor natural.
+ * @param txPower_ parametro de valor entero.
+ */
   EmisoraBLE( const char * nombreEmisora_, const uint16_t fabricanteID_,
 			  const int8_t txPower_ ) 
 	:
@@ -47,11 +86,11 @@ public:
 	// por tanto NO_encenderEmisora();
   } // ()
 
-
+  // .........................................................
+  // .........................................................
   /* creo que no me sirve esta versión porque parece
 	 que no se instalen los callbacks si la emisora no está encendida,
 	 pero no la puedo encender en el constructor 
-	 
   EmisoraBLE( const char * nombreEmisora_, const uint16_t fabricanteID_,
 			  const int8_t txPower_,
 			  CallbackConexionEstablecida cbce,
@@ -64,40 +103,72 @@ public:
 	instalarCallbackConexionTerminada( cbct );
   } // ()
   */
-  
-
+  // .........................................................
+  /**
+  * La funcion encenderEmisora() enciende la emisora.
+  * encenderEmisora()
+  */
   void encenderEmisora() {
 	// Serial.println ( "Bluefruit.begin() " );
 	 Bluefruit.begin(); 
+
 	 // por si acaso:
 	 (*this).detenerAnuncio();
-  } 
+  } // ()
+  // .........................................................
 
+  // .........................................................
+  /**
+  * La funcion encenderEmisora() enciende la emisora con callback.
+  * CallbackConexionEstablecida,CallbackConexionTerminada -> encenderEmisora()
+  * @param cbce parametro de valor CallbackConexionEstablecida.
+  * @param cbct parametro de valor CallbackConexionTerminada.
+  */
   void encenderEmisora( CallbackConexionEstablecida cbce,
 						CallbackConexionTerminada cbct ) {
 
 	encenderEmisora();
+
 	instalarCallbackConexionEstablecida( cbce );
 	instalarCallbackConexionTerminada( cbct );
 
-  }
-  
+  } // ()
+  // .........................................................
+
+  // .........................................................
+  /**
+  * La funcion detenerAnuncio() detiene el anuncio si el anuncio esta activo.
+  * detenerAnuncio()
+  */
   void detenerAnuncio() {
-	  
+
 	if ( (*this).estaAnunciando() ) {
 	  // Serial.println ( "Bluefruit.Advertising.stop() " );
 	  Bluefruit.Advertising.stop(); 
 	}
-	
-  }
 
-  // estaAnunciando() -> Boleano
-  //Comprubea si se esta lanzando un anuncio
+  }  // ()
+  // .........................................................
+
+  // .........................................................
+  /**
+  * La funcion estaAnunciando() booleano para saber si esta anunciando.
+  * V/F <- estaAnunciado()
+  */
   bool estaAnunciando() {
 	return Bluefruit.Advertising.isRunning();
-  }
+  } // ()
+  // .........................................................
 
-
+  // .........................................................
+  /**
+  * La funcion emitirAnuncioIBeacon() emite el anuncio del IBeacon.
+  * [N],Z,Z,N -> emitirAnuncioIBeacon()
+  * @param beaconUUID parametro de valor natural.
+  * @param major parametro de valor entero.
+  * @param minor parametro de valor entero.
+  * @param rssi parametro de valor natural.
+  */
   void emitirAnuncioIBeacon( uint8_t * beaconUUID, int16_t major, int16_t minor, uint8_t rssi ) {
 	(*this).detenerAnuncio();
 	
@@ -177,6 +248,15 @@ public:
 
 	const uint8_t tamanyoCarga = strlen( carga );
   */
+  // .........................................................
+
+  // .........................................................
+  /**
+  * La funcion emitirAnuncioIBeaconLibre() emite el anuncio del IBeacon libre.
+  * [Texto],N -> emitirAnuncioIBeaconLibre()
+  * @param carge parametro de valor Texto.
+  * @param tamanyoCarga parametro de valor natural.
+  */
   void emitirAnuncioIBeaconLibre( const char * carga, const uint8_t tamanyoCarga ) {
 
 	(*this).detenerAnuncio(); 
@@ -193,8 +273,10 @@ public:
 	// con este parece que no va  !
 	// Bluefruit.Advertising.addFlags(BLE_GAP_ADV_FLAG_LE_GENERAL_DISC_MODE);
 
+	//
 	// hasta ahora habrá, supongo, ya puestos los 5 primeros bytes. Efectivamente.
 	// Falta poner 4 bytes fijos (company ID, beacon type, longitud) y 21 de carga
+	//
 	uint8_t restoPrefijoYCarga[4+21] = {
 	  0x4c, 0x00, // companyID 2
 	  0x02, // ibeacon type 1byte
@@ -207,11 +289,15 @@ public:
 	  '-'
 	};
 
+	//
 	// addData() hay que usarlo sólo una vez. Por eso copio la carga
 	// en el anterior array, donde he dejado 21 sitios libres
+	//
 	memcpy( &restoPrefijoYCarga[4], &carga[0], ( tamanyoCarga > 21 ? 21 : tamanyoCarga ) ); 
-	
+
+	//
 	// copio la carga para emitir
+	//
 	Bluefruit.Advertising.addData( BLE_GAP_AD_TYPE_MANUFACTURER_SPECIFIC_DATA,
 								   &restoPrefijoYCarga[0],
 								   4+21 );
@@ -230,8 +316,16 @@ public:
 
 	Globales::elPuerto.escribir( "emitiriBeacon libre  Bluefruit.Advertising.start( 0 );  \n");
   } // ()
+  // .........................................................
 
-
+  // .........................................................
+  /**
+  * La funcion anyadirServicio() anyade el servicio si no esta anyadido en antelacion.
+  * ServicioEmisora -> anyadirServicio()
+  *				T/F <- 
+  * @param servicio parametro de valor ServicioEnEmisora.
+  * @return r.
+  */
   bool anyadirServicio( ServicioEnEmisora & servicio ) {
 
 	Globales::elPuerto.escribir( " Bluefruit.Advertising.addService( servicio ); \n");
@@ -246,13 +340,31 @@ public:
 	return r;
 	 // nota: uso conversión de tipo de servicio (ServicioEnEmisora) a BLEService
 	 // para addService()
-  }
+  } // ()
+  // .........................................................
 
-  
+  // .........................................................
+  /**
+  * La funcion anyadirServicioConSusCaracteristicas() anyade el servicio con sus caracteristicas si no esta anyadido en antelacion.
+  * ServicioEmisora -> anyadirServicioConSusCaracteristicas()
+  *				T/F <- 
+  * @param servicio parametro de valor ServicioEnEmisora.
+  * @return (*this).anyadirServicio( servicio ).
+  */
   bool anyadirServicioConSusCaracteristicas( ServicioEnEmisora & servicio ) { 
 	return (*this).anyadirServicio( servicio );
-  }
+  } // 
 
+  // .........................................................
+  /**
+  * La funcion anyadirServicioConSusCaracteristicas() anyade el servicio con sus caracteristicas si no esta anyadido en antelacion.
+  * ServicioEmisora,[Texto],[T] -> anyadirServicianyadirServicioConSusCaracteristicasoConSusCaracteristicasYActivar()
+  *							T/F <- 
+  * @param servicio parametro de valor ServicioEnEmisora.
+  * @param Caracteristica parametro de valor caracteristica.
+  * @param T parametro de valor restoCaracteristicas.
+  * @return anyadirServicioConSusCaracteristicas( servicio, restoCaracteristicas... ).
+  */
   template <typename ... T>
   bool anyadirServicioConSusCaracteristicas( ServicioEnEmisora & servicio,
 											 ServicioEnEmisora::Caracteristica & caracteristica,
@@ -262,8 +374,18 @@ public:
 
 	return anyadirServicioConSusCaracteristicas( servicio, restoCaracteristicas... );
 	
-  }
+  } // ()
+  // .........................................................
 
+  // .........................................................
+  /**
+  * La funcion anyadirServicioConSusCaracteristicas() anyade el servicio con sus caracteristicas y la activa si no esta anyadido en antelacion.
+  * ServicioEmisora,[T] -> anyadirServicioConSusCaracteristicasYActivar()
+  *							T/F <- 
+  * @param servicio parametro de valor ServicioEnEmisora.
+  * @param T parametro de valor restoCaracteristicas.
+  * @return anyadirServicioConSusCaracteristicas( servicio, restoCaracteristicas... ).
+  */
   template <typename ... T>
   bool anyadirServicioConSusCaracteristicasYActivar( ServicioEnEmisora & servicio,
 													 // ServicioEnEmisora::Caracteristica & caracteristica,
@@ -275,20 +397,45 @@ public:
 
 	return r;
 	
-  }
+  } // ()
+  // .........................................................
 
+  // .........................................................
+  /**
+  * La funcion instalarCallbackConexionEstablecida() instala por callback la conexion establecida.
+  * CallbackConexionEstablecida -> instalarCallbackConexionEstablecida() 
+  * @param cb de valor CallbackConexionEstablecida.
+  */
   void instalarCallbackConexionEstablecida( CallbackConexionEstablecida cb ) {
 	Bluefruit.Periph.setConnectCallback( cb );
-  }
+  } // ()
+  // .........................................................
 
+  // .........................................................
+  /**
+  * La funcion instalarCallbackConexionTerminada() instala por callback la conexion terminada.
+  * CallbackConexionTerminada -> instalarCallbackConexionTerminada() 
+  * @param cb de valor CallbackConexionTerminada.
+  */
   void instalarCallbackConexionTerminada( CallbackConexionTerminada cb ) {
 	Bluefruit.Periph.setDisconnectCallback( cb );
-  }
+  } // ()
+  // .........................................................
 
+  // .........................................................
+  /**
+  * La funcion instalarCallbackConexionTerminada() instala por callback la conexion terminada.
+  * N -> getConexion() <- 
+  * @param connHandle de valor natural.
+  */
   BLEConnection * getConexion( uint16_t connHandle ) {
 	return Bluefruit.Connection( connHandle );
-  }
+  } // ()
+// ----------------------------------------------------------
 
-};
+}; // class
 
+// ----------------------------------------------------------
 #endif
+
+
