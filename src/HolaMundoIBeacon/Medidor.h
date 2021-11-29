@@ -28,7 +28,7 @@ public:
  * medirCO2() -> Z
  */
   int medirCO2() {
-	return 888;
+	return 1002;
   } // ()
   // .....................................................
 
@@ -37,7 +37,7 @@ public:
  * medirTemperatura() -> Z
  */
   int medirTemperatura() {
-	return -20; // qué frío !
+	return 37; // qué frío !
   } // ()
 	// ------------------------------------------------------
 

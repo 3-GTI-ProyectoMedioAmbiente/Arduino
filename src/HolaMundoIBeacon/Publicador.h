@@ -28,8 +28,8 @@ public:
  * laEmisora:EmisoraBLE
  */
   EmisoraBLE laEmisora {
-	"angel-gti", //  nombre emisora
-	  0x004c, // fabricanteID (Apple)
+	"EA:86:B7:6C:64:9B_Angle_corp", //  nombre emisora
+	  0x004b, // fabricanteID (Apple)
 	  4 // txPower
 	  };
   // ............................................................
@@ -75,7 +75,7 @@ public:
 	(*this).laEmisora.encenderEmisora();
   } // ()
   // ............................................................
-
+  
   // ............................................................
   /**
   * La funcion publicarCO2() publica los valores de CO2 en laEmisora.

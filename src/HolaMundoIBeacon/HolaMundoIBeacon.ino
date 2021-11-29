@@ -15,6 +15,7 @@
 
 #include "LED.h"
 #include "PuertoSerie.h"
+
 #include <Adafruit_TinyUSB.h>
 namespace Globales {
   
@@ -124,8 +125,6 @@ void loop () {
   elPuerto.escribir( "\n---- loop(): empieza " );
   elPuerto.escribir( cont );
   elPuerto.escribir( "\n" );
-
-
   lucecitas();
 
   int valorCO2 = elMedidor.medirCO2();
