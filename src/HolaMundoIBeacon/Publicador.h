@@ -84,17 +84,16 @@ public:
   * @param contador parametro de valor natural.
   * @param tiempoEspera parametro de valor entero.
   */
-  void publicarCO2( int16_t valorCO2, uint8_t contador,
-					long tiempoEspera ) {
+  void publicarMedicion( int16_t valorConcentracion, long tiempoEspera ) {
 
 	//
 	// 1. empezamos anuncio
 	//
-	uint16_t major = (MedicionesID::CO2 << 8) + contador;
-	(*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
-											major,
-											valorCO2, // minor
-											(*this).RSSI // rssi
+	uint16_t major = (MedicionesID::CO2 << 8) ;
+	(*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID 
+											//major,
+											//valorConcentracion, // minor
+											//(*this).RSSI // rssi
 									);
 
 	/*
@@ -127,19 +126,8 @@ public:
   * @param contador parametro de valor natural.
   * @param tiempoEspera parametro de valor entero.
   */
-  void publicarTemperatura( int16_t valorTemperatura,
-							uint8_t contador, long tiempoEspera ) {
-
-	uint16_t major = (MedicionesID::TEMPERATURA << 8) + contador;
-	(*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
-											major,
-											valorTemperatura, // minor
-											(*this).RSSI // rssi
-									);
-	esperar( tiempoEspera );
-
-	(*this).laEmisora.detenerAnuncio();
-  } // ()
+  
+   // ()
   // --------------------------------------------------------------
 
 }; // class

@@ -169,17 +169,12 @@ public:
   * @param minor parametro de valor entero.
   * @param rssi parametro de valor natural.
   */
-  void emitirAnuncioIBeacon( uint8_t * beaconUUID, int16_t major, int16_t minor, uint8_t rssi ) {
+  void emitirAnuncioIBeacon( uint8_t * beaconUUID/*, int16_t major, int16_t minor, uint8_t rssi*/ ) {
 	(*this).detenerAnuncio();
 	
 	// creo el beacon 
-    Serial.println( "-------------MINOR--------------->>>>");
-    Serial.print( minor );
-
-    Serial.println( "------------------MAJOR---------->>>>");
-
-      Serial.println( major);
-	BLEBeacon elBeacon( beaconUUID, major, minor, rssi );
+    
+	BLEBeacon elBeacon( beaconUUID/*, major, minor, rssi */);
 	elBeacon.setManufacturer( (*this).fabricanteID );
 
 	// parece que esto debe ponerse todo aquí
@@ -437,5 +432,3 @@ public:
 
 // ----------------------------------------------------------
 #endif
-
-
