@@ -125,6 +125,8 @@ class Medidor{
     //-------------------------------------------
     int getConcentracionGas()
     {
+      dataArray[1] = dataArray[1]-1400;
+      
       return dataArray[1];
     }
 
