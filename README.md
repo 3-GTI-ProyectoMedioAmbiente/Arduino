@@ -1,3 +1,17 @@
 # Arduino
 
-Código referente al sensor de gas.Este enviará los datos al dispositivo móvil.
+##Descripcion:
+
+Parte del proyecto donde tendremos el sensor que recojerá los datos para después enviarlos a través de beacons a nuestra app.
+
+##Requisitos:
+
+-PLaca Sparkfun 
+-Sensor CO2 
+-Cables
+-Programa arduino compilado
+-Batería externa
+
+##Funcionamiento:
+
+Conectaremos la placa con el sensor habiendo descargado las librerías necesarias para ello y habiendo conectado los cables correspondientes.
