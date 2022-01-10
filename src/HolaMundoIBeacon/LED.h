@@ -34,10 +34,10 @@ public:
  * @return nada.
  */
   LED (int numero)
-	: numeroLED (numero), encendido(false)
+  : numeroLED (numero), encendido(false)
   {
-	pinMode(numeroLED, OUTPUT);
-	apagar ();
+  pinMode(numeroLED, OUTPUT);
+  apagar ();
   }
   // .........................................................
 
@@ -47,8 +47,8 @@ public:
  * encender() ->
  */
   void encender () {
-	digitalWrite(numeroLED, HIGH); 
-	encendido = true; //pone el booleano en true.
+  digitalWrite(numeroLED, HIGH); 
+  encendido = true; //pone el booleano en true.
   }
   // .........................................................
 
@@ -58,8 +58,8 @@ public:
  * apagar() ->
  */
   void apagar () {
-	  digitalWrite(numeroLED, LOW);
-	  encendido = false; //pone el booleano en false.
+    digitalWrite(numeroLED, LOW);
+    encendido = false; //pone el booleano en false.
   }
   // .........................................................
 
@@ -69,11 +69,11 @@ public:
  * alternar()
  */
   void alternar () {
-	if (encendido) { //si encendido es true
-	  apagar();
-	} else { //si encendido es false
-	  encender ();
-	}
+  if (encendido) { //si encendido es true
+    apagar();
+  } else { //si encendido es false
+    encender ();
+  }
   } // ()
   // .........................................................
   
@@ -85,9 +85,9 @@ public:
  * @return nada.
  */
   void brillar (long tiempo) {
-	encender ();
-	esperar(tiempo); 
-	apagar ();
+  encender ();
+  esperar(tiempo); 
+  apagar ();
   }
   // ----------------------------------------------------------
 }; // class

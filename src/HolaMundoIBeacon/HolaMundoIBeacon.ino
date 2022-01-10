@@ -41,14 +41,14 @@ namespace Globales {
  */
 
 namespace Globales {
-	
+  
   Publicador elPublicador;
   Medidor elMedidor(&Serial1);
   
 };
 
 /**
- * La funcion inicializarComunicacionSensor() de momento nada.
+ * La funcion inicializarPlaquita() de momento nada.
  * inicializarPlaquita()
  */
 
@@ -62,39 +62,61 @@ void inicializarComunicacionSensor () {
  * La funcion setup() esta funcion sólo se ejecutará una vez al inicio del sistema.
  * setup() ->
  */
+
 void setup() {
-  using namespace Globales;
-  // 
-  // Iniciamos el Serial1 para establecer la comunicación UART con el sensor
-  // 
+
+  //Globales::elPuerto.esperarDisponible();
   inicializarComunicacionSensor();
 
+  // Suspend Loop() to save power
+  // suspendLoop();
+  Globales::elPublicador.encenderEmisora();
+  esperar( 1000 ); 
 
-  // 
-  // Inicializamos la emisora BLE de Bluefruit...
-  // 
-  elPublicador.encenderEmisora();
+  // Globales::elPublicador.laEmisora.pruebaEmision();
 
-  delay( 1000 ); 
+  
 
-  elMedidor.getInformacionSensor();
+  //esperar( 1000 );
+  Globales::elPuerto.escribir( "---- setup(): fin ---- \n " );
 
-  elPuerto.escribir( "---- setup(): fin ---- \n " );
+}
 
-} // setup ()
+/**
+ * La funcion lucecitas() enciende y apaga el led.
+ * lucecitas()
+ */
 
+/*inline void lucecitas() {
+  using namespace Globales;
 
+  elLED.brillar( 100 ); // 100 encendido
+  esperar ( 400 ); //  100 apagado
+  elLED.brillar( 100 );
+  esperar ( 400 ); 
+  Globales::elLED.brillar( 100 );
+  esperar ( 400 ); 
+  Globales::elLED.brillar( 1000 );
+  esperar ( 1000 ); 
+} 
+*/
+/**
+ * La funcion Loop declara cont a 0.
+ * Loop{
+ *  cont:N = 0
+ *  }:namespace
+ */
 
-// --------------------------------------------------------------
-// loop ()
-// --------------------------------------------------------------
 namespace Loop {
   uint8_t cont = 0;
   bool leerEEPROM = true;
 };
 
-// ..............................................................
-// ..............................................................
+/**
+ * La funcion loop() esta funcion se ejecutará en bucle mientras el sistema este en funcionamiento.
+ * loop()
+ */
+
 void loop () {
 
   using namespace Loop;
@@ -104,88 +126,53 @@ void loop () {
     
     leerEEPROM = false;
   }
-  
-
   cont++;
-
-  // 
-  // Mido del sensor 
-  // 
-  elMedidor.iniciarMedicion('\r');
+  elMedidor.iniciarMedidor('\r');
 
   elPuerto.escribir( "\n---- loop(): empieza " );
   elPuerto.escribir( cont );
   elPuerto.escribir( "\n" );
+  //lucecitas();
 
-  // 
-  // Obtengo las mediciones y publico
-  // 
-  uint16_t valorConcentracion = elMedidor.getConcentracionGas();
-  int intervaloEmision = 1000;
-  uint8_t valorTemperatura = elMedidor.getTemperatura();
-  uint8_t valorRH = elMedidor.getRH();
-  String tipoMedicion = elMedidor.getTipoMedicion();
-
-  elPublicador.publicarMedicion( valorConcentracion, /*valorTemperatura, valorRH, tipoMedicion, */
-                  intervaloEmision // intervalo de emisión
-                  );
-
-  //A ver que saca en el puerto serie...
-  elPuerto.escribir( "\n");
-  elPuerto.escribir( valorConcentracion );
-  /*elPuerto.escribir( "\n");
-  elPuerto.escribir( valorTemperatura );
-  elPuerto.escribir( "\n");
-  elPuerto.escribir( valorRH );
-  elPuerto.escribir( "\n");
-  elPuerto.escribir( tipoMedicion );
-  elPuerto.escribir( "\n");
-  */
-
-  /*elPuerto.escribir( "\n---- Envio C02: empieza \n" );
-  elPuerto.escribir( valorConcentracion );
-  elPublicador.publicarConcentracion( valorConcentracion,
-              intervaloEmision // intervalo de emisión
+  uint16_t valorCO2 = elMedidor.medirCO2();
+  
+  elPublicador.publicarCO2( valorCO2,
+              cont,
+              1000 // intervalo de emisión
               );
-
-  elPuerto.escribir( "\n---- Envio C02: TERMINA \n" );
-
-  // 
-  // Obtengo la temperatura y publico
-  // 
+              
+  // mido y publico
+  //int valorTemperatura = elMedidor.medirTemperatura();
   
-
-  elPuerto.escribir( "\n---- Envio Temperatura: empieza \n" );
-  elPuerto.escribir( valorTemperatura );
-  elPublicador.publicarTemperatura( valorTemperatura, 
-                  intervaloEmision // intervalo de emisión
+  /*elPublicador.publicarTemperatura( valorTemperatura+cont, 
+                  cont,
+                  1000 // intervalo de emisión
                   );
-  elPuerto.escribir( "\n---- Envio Temperatura: TERMINA \n" );
+  */
+  // prueba para emitir un iBeacon y poner
+  // en la carga (21 bytes = uuid 16 major 2 minor 2 txPower 1 )
+  // lo que queramos (sin seguir dicho formato)
 
+  // Al terminar la prueba hay que hacer Publicador::laEmisora privado
 
-  // 
-  // Obtengo la humedad y publico
-  // 
+  char datos[21] = {
+  'H', 'o', 'l', 'a',
+  'H', 'o', 'l', 'a',
+  'H', 'o', 'l', 'a',
+  'H', 'o', 'l', 'a',
+  'H', 'o', 'l', 'a',
+  'H'
+  };
+
+  // elPublicador.laEmisora.emitirAnuncioIBeaconLibre ( &datos[0], 21 );
+ // elPublicador.laEmisora.emitirAnuncioIBeaconLibre ( "MolaMolaMolaMolaMolaM", 21 );
+
+  esperar( 2000 );
+
+  elPublicador.laEmisora.detenerAnuncio();
   
-
-  elPuerto.escribir( "\n---- Envio Humedad Relativa: empieza \n" );
-  elPuerto.escribir( valorRH );
-  elPublicador.publicarRH( valorRH, 
-                  intervaloEmision // intervalo de emisión
-                  );
-  elPuerto.escribir( "\n---- Envio Humedad Relativa: TERMINA \n" );
-
   elPuerto.escribir( "---- loop(): acaba **** " );
   elPuerto.escribir( cont );
   elPuerto.escribir( "\n" );
-  elPublicador.laEmisora.detenerAnuncio();*/
-  delay( 1000 );
-  // 
-  // 
-  // 
   
-} // loop ()
-// --------------------------------------------------------------
-// --------------------------------------------------------------
-// --------------------------------------------------------------
-// --------------------------------------------------------------
+}

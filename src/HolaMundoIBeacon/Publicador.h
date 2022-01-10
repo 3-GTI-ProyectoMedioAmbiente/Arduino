@@ -16,9 +16,9 @@ private:
  * beaconUUID:[Texto]
  */
   uint8_t beaconUUID[16] = { 
-	'E', 'P', 'S', 'G', '-', 'G', 'T', 'I', 
-	'-', 'P', 'R', 'O', 'Y', '-', '3', 'A'
-	};
+  'E', 'P', 'S', 'G', '-', 'G', 'T', 'I', 
+  '-', 'P', 'R', 'O', 'Y', '-', '3', 'A'
+  };
   // ............................................................
 
 public:
@@ -28,10 +28,10 @@ public:
  * laEmisora:EmisoraBLE
  */
   EmisoraBLE laEmisora {
-	"EA:86:B7:6C:64:9B_Angle_corp", //  nombre emisora
-	  0x004b, // fabricanteID (Apple)
-	  4 // txPower
-	  };
+  "EA:86:B7:6C:64:9B_Angle_corp", //  nombre emisora
+    0x004b, // fabricanteID (Apple)
+    4 // txPower
+    };
   // ............................................................
 
   /**
@@ -49,9 +49,9 @@ public:
  * MedicionesID -> N,N,N
  */
   enum MedicionesID  {
-	CO2 = 11,
-	TEMPERATURA = 12,
-	RUIDO = 13
+  CO2 = 11,
+  TEMPERATURA = 12,
+  RUIDO = 13
   };
   // ............................................................
 
@@ -61,8 +61,8 @@ public:
   * Publicador()
   */
   Publicador( ) {
-	// ATENCION: no hacerlo aquí. (*this).laEmisora.encenderEmisora();
-	// Pondremos un método para llamarlo desde el setup() más tarde
+  // ATENCION: no hacerlo aquí. (*this).laEmisora.encenderEmisora();
+  // Pondremos un método para llamarlo desde el setup() más tarde
   } // ()
   // ............................................................
 
@@ -72,7 +72,7 @@ public:
   * encenderEmisora() ->
   */
   void encenderEmisora() {
-	(*this).laEmisora.encenderEmisora();
+  (*this).laEmisora.encenderEmisora();
   } // ()
   // ............................................................
   
@@ -84,37 +84,38 @@ public:
   * @param contador parametro de valor natural.
   * @param tiempoEspera parametro de valor entero.
   */
-  void publicarMedicion( int16_t valorConcentracion, long tiempoEspera ) {
+  void publicarCO2( int16_t valorCO2, uint8_t contador,
+          long tiempoEspera ) {
 
-	//
-	// 1. empezamos anuncio
-	//
-	uint16_t major = (MedicionesID::CO2 << 8) ;
-	(*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID 
-											//major,
-											//valorConcentracion, // minor
-											//(*this).RSSI // rssi
-									);
+  //
+  // 1. empezamos anuncio
+  //
+  uint16_t major = (MedicionesID::CO2 << 8) + contador;
+  (*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
+                      major,
+                      valorCO2, // minor
+                      (*this).RSSI // rssi
+                  );
 
-	/*
-	Globales::elPuerto.escribir( "   publicarCO2(): valor=" );
-	Globales::elPuerto.escribir( valorCO2 );
-	Globales::elPuerto.escribir( "   contador=" );
-	Globales::elPuerto.escribir( contador );
-	Globales::elPuerto.escribir( "   todo="  );
-	Globales::elPuerto.escribir( major );
-	Globales::elPuerto.escribir( "\n" );
-	*/
+  /*
+  Globales::elPuerto.escribir( "   publicarCO2(): valor=" );
+  Globales::elPuerto.escribir( valorCO2 );
+  Globales::elPuerto.escribir( "   contador=" );
+  Globales::elPuerto.escribir( contador );
+  Globales::elPuerto.escribir( "   todo="  );
+  Globales::elPuerto.escribir( major );
+  Globales::elPuerto.escribir( "\n" );
+  */
 
-	//
-	// 2. esperamos el tiempo que nos digan
-	//
-	esperar( tiempoEspera );
+  //
+  // 2. esperamos el tiempo que nos digan
+  //
+  esperar( tiempoEspera );
 
-	//
-	// 3. paramos anuncio
-	//
-	(*this).laEmisora.detenerAnuncio();
+  //
+  // 3. paramos anuncio
+  //
+  (*this).laEmisora.detenerAnuncio();
   } // ()
   // ............................................................
 
@@ -126,8 +127,20 @@ public:
   * @param contador parametro de valor natural.
   * @param tiempoEspera parametro de valor entero.
   */
-  
-   // ()
+  /*void publicarTemperatura( int16_t valorTemperatura,
+              uint8_t contador, long tiempoEspera ) {
+
+  uint16_t major = (MedicionesID::TEMPERATURA << 8) + contador;
+  (*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
+                      major,
+                      valorTemperatura, // minor
+                      (*this).RSSI // rssi
+                  );
+  esperar( tiempoEspera );
+
+  (*this).laEmisora.detenerAnuncio();
+  } // ()
+  */
   // --------------------------------------------------------------
 
 }; // class

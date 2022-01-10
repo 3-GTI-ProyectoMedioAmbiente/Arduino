@@ -16,8 +16,8 @@ public:
  * @return nada.
  */
   PuertoSerie (long baudios) {
-	Serial.begin( baudios );
-	// mejor no poner esto aquí: while ( !Serial ) delay(10);   
+  Serial.begin( baudios );
+  // mejor no poner esto aquí: while ( !Serial ) delay(10);   
   } // ()
   // .........................................................
 
@@ -28,9 +28,9 @@ public:
  */
   void esperarDisponible() {
 
-	while ( !Serial ) { //mientras espero
-	  delay(10);   
-	}
+  while ( !Serial ) { //mientras espero
+    delay(10);   
+  }
 
   } // ()
   // .........................................................
@@ -44,7 +44,7 @@ public:
  */
   template<typename T>
   void escribir (T mensaje) { 
-	Serial.print( mensaje ); //escribe el Texto
+  Serial.print( mensaje ); //escribe el Texto
   } // ()
   // ----------------------------------------------------------
   
